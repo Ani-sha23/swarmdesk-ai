@@ -1,0 +1,47 @@
+[
+  {
+    "id": "fixture-001",
+    "label": "normal_billing_and_access",
+    "subject": "Double charge + dashboard inactive",
+    "body": "Hi, I was charged twice for my Pro subscription last month. My analytics dashboard also shows 'subscription inactive' even though my account page says active. I need a refund and dashboard access restored ASAP.",
+    "expected_priority": "high",
+    "expected_escalated": false,
+    "expected_domains": ["billing", "technical"]
+  },
+  {
+    "id": "fixture-002",
+    "label": "critical_security_incident",
+    "subject": "Account compromised - urgent",
+    "body": "I think my account was hacked. Someone changed my payment method and exported all my data without my authorization. This is extremely urgent. I may need to involve my attorney.",
+    "expected_priority": "critical",
+    "expected_escalated": true,
+    "expected_domains": ["account"]
+  },
+  {
+    "id": "fixture-003",
+    "label": "simple_password_reset",
+    "subject": "Can't reset my password",
+    "body": "The password reset link I received isn't working. It says 'link expired' but I clicked it within 5 minutes of receiving it. Please help.",
+    "expected_priority": "normal",
+    "expected_escalated": false,
+    "expected_domains": ["account"]
+  },
+  {
+    "id": "fixture-004",
+    "label": "api_rate_limit_technical",
+    "subject": "Getting 429 errors from your API",
+    "body": "Our integration keeps hitting 429 rate limit errors even though we're on the Pro plan. We're sending about 500 requests per minute. Is this expected? We need to scale up urgently.",
+    "expected_priority": "high",
+    "expected_escalated": false,
+    "expected_domains": ["technical"]
+  },
+  {
+    "id": "fixture-005",
+    "label": "multi_domain_complex",
+    "subject": "Billing, access, and API all broken after upgrade",
+    "body": "After upgrading to Enterprise yesterday: (1) I was charged for both Pro and Enterprise in the same billing cycle, (2) my team can't access the dashboard, and (3) our API keys stopped working. Three separate issues, all urgent.",
+    "expected_priority": "critical",
+    "expected_escalated": false,
+    "expected_domains": ["billing", "technical", "account"]
+  }
+]
