@@ -252,8 +252,4 @@ Tested on **200 synthetic support tickets** across 3 domains (SaaS billing, tech
 **Team:** InnovaLite
 **Hackathon:** Microsoft Build AI 2026
 
----
 
-## 📄 License
-
-MIT License — See [LICENSE](LICENSE) for details.
