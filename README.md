@@ -1,4 +1,4 @@
-# 🤖 SwarmDesk AI
+# SwarmDesk AI
 ### Multi-Agent Intelligent Support Orchestration
 
 > **Microsoft Build AI Hackathon 2026** — Theme: **Agent Swarms**
@@ -19,7 +19,7 @@ Traditional single-agent chatbots fail at complex support tickets because they l
 
 ---
 
-## 🧠 The Problem
+## The Problem
 
 | Metric | Reality |
 |--------|---------|
@@ -69,7 +69,7 @@ USER TICKET (Web/API/Email)
 
 ---
 
-## 🤖 The Five Agents
+## The Five Agents
 
 ### 1. 🎯 Planner Agent
 - Receives raw ticket and decomposes into a **task dependency graph**
@@ -162,7 +162,7 @@ swarmdesk-ai/
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Python 3.11+
@@ -233,7 +233,7 @@ Tested on **200 synthetic support tickets** across 3 domains (SaaS billing, tech
 
 ---
 
-## 🔮 Future Scope
+## Future Scope
 
 - **Plug-in Agent Marketplace** — Domain-specific agent modules (healthcare, finance, legal)
 - **Multi-tenant SaaS** — White-label deployment for enterprise
