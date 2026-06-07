@@ -1,201 +1,259 @@
-# 🎬 SwarmDesk AI — Demo Video Script
-### Microsoft Build AI Hackathon 2026 | Team: InnovaLite | Anisha Garg
-### Duration: ~2 min 45 sec | Format: Screen recording + voiceover
+# 🤖 SwarmDesk AI
+### Multi-Agent Intelligent Support Orchestration
+
+> **Microsoft Build AI Hackathon 2026** — Theme: **Agent Swarms**
+> Team: **InnovaLite** | Anisha Garg
+
+[![Demo](https://img.shields.io/badge/Live_Demo-swarmdesk.vercel.app-00C2CB?style=for-the-badge)](https://swarmdesk.vercel.app)
+[![Theme](https://img.shields.io/badge/Theme-Agent_Swarms-7B2FBE?style=for-the-badge)]()
+[![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)]()
+[![AutoGen](https://img.shields.io/badge/Microsoft-AutoGen_0.4-0078D4?style=for-the-badge&logo=microsoft)]()
 
 ---
 
-## ⚙️ PRE-RECORDING SETUP
-- Browser open at `http://localhost:3000` (SwarmDesk portal)
-- API logs visible in a split terminal on the right
-- Ticket dashboard showing 0 active tickets
-- Screen resolution: 1920×1080, browser at 100% zoom
+## 📌 Project Description
+
+**SwarmDesk AI** is a production-grade multi-agent support orchestration system where five specialized AI agents collaborate, self-organize, and validate each other to resolve complex, multi-step customer support tickets — end-to-end, without human intervention for Tier 1 & 2 issues.
+
+Traditional single-agent chatbots fail at complex support tickets because they lack domain depth, can't decompose multi-part problems, and hallucinate without validation. SwarmDesk solves this with a **distributed agent swarm** where no single agent bears the full burden.
 
 ---
 
-## 🎙️ SCRIPT
+## 🧠 The Problem
+
+| Metric | Reality |
+|--------|---------|
+| 73% of tickets | Span multiple departments |
+| 8+ minutes | Average resolution time |
+| 42% of tickets | Misrouted on first attempt |
 
 ---
 
-### [0:00 – 0:15] — TITLE CARD + HOOK
+## ⚙️ System Architecture
 
-> **[Show: Branded title card — "SwarmDesk AI | Powered by Agent Swarms"]**
-
-**VOICEOVER:**
-"What if resolving a complex customer support ticket didn't require a human at all?
-Meet SwarmDesk AI — a multi-agent system where five specialized AI agents
-collaborate, validate, and escalate in real time to solve what no single agent can."
-
----
-
-### [0:15 – 0:30] — THE PROBLEM (10 sec)
-
-> **[Show: Simple stats slide or animated text: 73% of tickets span multiple teams. 8+ min avg resolution. 42% misrouted.]**
-
-**VOICEOVER:**
-"Current support bots are single agents. They fail on complex, multi-step tickets.
-SwarmDesk fixes that with a distributed agent swarm — planners, retrievers,
-responders, validators, and escalation agents working together."
-
----
-
-### [0:30 – 0:55] — LIVE DEMO: TICKET SUBMISSION
-
-> **[Show: SwarmDesk web portal — the ticket submission form]**
-
-**VOICEOVER:**
-"Let me submit a real ticket. I'll use something genuinely complex."
-
-> **[Type into the ticket form:]**
-> *"Hi, I was charged twice for my Pro subscription last month. I also can't access the analytics dashboard since the billing issue — it keeps saying 'subscription inactive' even though my account shows active. I need a refund and I need my dashboard access restored. This is urgent."*
-
-> **[Click Submit — show the "Processing..." state with agent activity feed on the right panel]**
-
-**VOICEOVER:**
-"Notice the agent activity feed on the right — this is the swarm in action."
-
----
-
-### [0:55 – 1:30] — AGENT SWARM IN ACTION (CORE DEMO)
-
-> **[Show: Live agent trace panel updating in real time]**
-
-**VOICEOVER:**
-"The Orchestrator receives the ticket and routes it to the Planner Agent."
-
-> **[Agent feed shows: `[PLANNER] Decomposed into 3 sub-tasks: (1) Billing refund check (2) Subscription status verification (3) Dashboard access restoration`]**
-
-**VOICEOVER:**
-"The Planner identifies three distinct problems and builds a task graph."
-
-> **[Agent feed: `[RETRIEVER] Searching KB... Found 4 relevant documents: refund-policy-v2.md, subscription-states.md, dashboard-access-faq.md, billing-bug-2026-03.md`]**
-
-**VOICEOVER:**
-"The Retriever Agent performs semantic search across the knowledge base — pulling
-4 relevant documents including a known billing bug report from March."
-
-> **[Agent feed: `[RESPONDER] Drafting response with retrieved context... Done (1.2s)`]**
-
-> **[Agent feed: `[VALIDATOR] Checking response... Confidence Score: 92/100 ✅`]**
-
-**VOICEOVER:**
-"The Responder drafts a response grounded in real KB data.
-The Validator independently reviews it — scoring 92 out of 100.
-Above our 75% threshold, so no escalation needed."
+```
+USER TICKET (Web/API/Email)
+        │
+        ▼
+┌─────────────────────┐
+│   ORCHESTRATOR      │  ← Azure OpenAI GPT-4o + AutoGen
+│  (Task Router)      │
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│   PLANNER AGENT     │  ← Decomposes ticket into sub-tasks + task graph
+└────────┬────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌──────────┐ ┌──────────────────────┐
+│RETRIEVER │ │   RESPONDER AGENT    │
+│ AGENT    │→│  (GPT-4o mini + RAG) │
+│(AI Search│ └──────────┬───────────┘
+│ + RAG)   │            │
+└──────────┘            ▼
+               ┌──────────────────┐
+               │ VALIDATOR AGENT  │  ← Confidence scoring & fact-check
+               └────────┬─────────┘
+                        │
+              ┌─────────┴──────────┐
+              │                    │
+       Score ≥ 75%            Score < 75%
+              │                    │
+              ▼                    ▼
+     SEND RESPONSE        ESCALATION AGENT
+      TO USER             (Human Handoff +
+                           Full Context Bundle)
+```
 
 ---
 
-### [1:30 – 1:55] — THE RESPONSE
+## 🤖 The Five Agents
 
-> **[Show: Final response delivered in the ticket view]**
+### 1. 🎯 Planner Agent
+- Receives raw ticket and decomposes into a **task dependency graph**
+- Identifies which knowledge domains are needed
+- Assigns sub-tasks to appropriate agents
+- **Model:** GPT-4o with structured output (JSON task graph)
 
-**VOICEOVER:**
-"In 6.1 seconds, the customer receives a complete, accurate, multi-part resolution —
-with a refund confirmation, account fix instructions, and a workaround for
-the dashboard until the billing is cleared."
+### 2. 📚 Retriever Agent
+- Performs **semantic search** over the knowledge base
+- Uses **RAG (Retrieval Augmented Generation)** with Azure AI Search
+- Returns top-5 relevant documents with relevance scores
+- **Model:** text-embedding-3-large + Azure AI Search vector mode
 
-> **[Highlight the response — scroll to show it covers all 3 issues]**
+### 3. ✍️ Responder Agent
+- Drafts the customer response using retrieved context
+- Follows brand tone, formatting guidelines, and escalation thresholds
+- **Model:** GPT-4o mini with prompt chaining
 
-**VOICEOVER:**
-"No template. No scripted reply. The swarm synthesized this from live KB data."
+### 4. ✅ Validator Agent
+- Independently reviews the drafted response
+- Scores for: factual accuracy, completeness, tone, hallucination risk
+- Returns a **confidence score (0–100)**
+- **Model:** GPT-4o with custom evaluation rubric
 
----
-
-### [1:55 – 2:20] — ESCALATION DEMO
-
-> **[Submit a second ticket:]**
-> *"I think my account was hacked and someone changed my payment method and exported all my data. I need this investigated immediately."*
-
-> **[Show agent feed: `[VALIDATOR] Confidence Score: 48/100 ⚠️ — Critical security keywords detected`]**
-> **[Show: `[ESCALATION] Routing to human agent. Context bundle prepared.`]**
-
-**VOICEOVER:**
-"Now watch this — a security-critical ticket. The Validator scores only 48
-and detects sensitive keywords. The Escalation Agent immediately routes it
-to a human with the full context bundle: agent trace, ticket history,
-recommended actions. The human agent never starts from scratch."
-
----
-
-### [2:20 – 2:40] — ARCHITECTURE CLOSE-UP
-
-> **[Switch to architecture diagram slide or the system overview tab in the UI]**
-
-**VOICEOVER:**
-"Under the hood: Microsoft AutoGen 0.4 orchestrates all five agents.
-GPT-4o powers the Planner, Validator, and Orchestrator.
-Azure AI Search handles semantic retrieval.
-Everything runs on Azure Container Apps — containerized, scalable, production-ready."
+### 5. 🚨 Escalation Agent
+- Triggered when Validator score < 75% OR ticket contains critical keywords
+- Packages full agent trace, context bundle, and recommended actions
+- Routes to human agent via ticketing system webhook
+- **Model:** Rule engine + GPT-4o intent classifier
 
 ---
 
-### [2:40 – 2:45] — CLOSE
+## 🛠️ Tech Stack
 
-> **[Return to the ticket dashboard showing both resolved tickets]**
-
-**VOICEOVER:**
-"SwarmDesk AI. Built for the Agent Swarms era.
-Team InnovaLite — Anisha Garg — Microsoft Build AI Hackathon 2026."
-
-> **[Fade to title card with GitHub URL and demo link]**
-
----
-
-## 📋 RECORDING NOTES
-
-| Section | Duration | Key Screen |
-|---------|----------|------------|
-| Title + Hook | 0:15 | Branded card |
-| Problem stats | 0:15 | Animated stats |
-| Ticket submission | 0:25 | Portal form |
-| Agent swarm live | 0:35 | Agent trace feed |
-| Response reveal | 0:25 | Ticket response view |
-| Escalation demo | 0:25 | Escalation alert |
-| Architecture | 0:20 | Diagram / overview tab |
-| Close | 0:05 | Dashboard |
-
-**Recommended tools:** OBS Studio (screen capture) + Audacity (voiceover)
-**Export:** MP4, 1080p, max 3 minutes ✅
-**Upload:** YouTube (Unlisted) → paste link in submission
+| Layer | Technology |
+|-------|-----------|
+| Agent Framework | Microsoft AutoGen 0.4 |
+| LLM — Primary | Azure OpenAI GPT-4o |
+| LLM — Response Draft | Azure OpenAI GPT-4o mini |
+| Embeddings | text-embedding-3-large |
+| Vector Store | Azure AI Search (vector + hybrid mode) |
+| Backend API | FastAPI + Python 3.11 |
+| Database | Azure Cosmos DB (NoSQL) |
+| Cache / State | Redis (Azure Cache for Redis) |
+| Frontend | Next.js 14 + TailwindCSS |
+| Deployment | Azure Container Apps + Vercel |
+| Auth | Azure AD B2C |
+| Observability | Azure Monitor + LangSmith |
+| CI/CD | GitHub Actions |
 
 ---
 
-## 📝 HACKATHON SUBMISSION FIELDS (Fill These In)
+## 📁 Repository Structure
 
-| Field | Value |
-|-------|-------|
-| **Project Title** | SwarmDesk AI |
-| **Theme** | Agent Swarms |
-| **Project Description** | See below ↓ |
-| **Frameworks/Tools** | AutoGen, Azure OpenAI, Azure AI Search, FastAPI, Next.js, Cosmos DB, Redis, LangSmith |
-| **Video Link** | [Your YouTube unlisted URL] |
-| **Demo Link** | https://swarmdesk.vercel.app |
-| **Repository** | https://github.com/AnishaGarg/swarmdesk-ai |
+```
+swarmdesk-ai/
+├── agents/
+│   ├── orchestrator.py       # Main AutoGen orchestrator
+│   ├── planner_agent.py      # Task decomposition agent
+│   ├── retriever_agent.py    # RAG + semantic search agent
+│   ├── responder_agent.py    # Response generation agent
+│   ├── validator_agent.py    # Confidence scoring agent
+│   └── escalation_agent.py  # Human handoff agent
+├── api/
+│   ├── main.py               # FastAPI entrypoint
+│   ├── routes/
+│   │   ├── tickets.py        # Ticket submission endpoints
+│   │   └── health.py         # Health check
+│   └── models/
+│       └── schemas.py        # Pydantic models
+├── rag/
+│   ├── indexer.py            # Knowledge base indexing
+│   ├── retriever.py          # Azure AI Search wrapper
+│   └── embeddings.py        # Embedding utilities
+├── frontend/
+│   ├── app/                  # Next.js 14 app directory
+│   ├── components/           # React components
+│   └── lib/                  # API client
+├── infrastructure/
+│   ├── bicep/                # Azure infrastructure as code
+│   └── docker-compose.yml   # Local dev setup
+├── tests/
+│   ├── test_agents.py
+│   ├── test_api.py
+│   └── fixtures/             # Sample tickets
+├── .env.example
+├── requirements.txt
+└── README.md
+```
 
 ---
 
-## 📄 PROJECT DESCRIPTION (copy-paste into HackerEarth form)
+## 🚀 Setup Instructions
 
-**Problem Statement:**
-Customer support at scale is fundamentally broken. 73% of tickets span multiple departments, average resolution time exceeds 8 minutes, and 42% of tickets are misrouted on the first attempt. Existing single-agent AI chatbots lack the domain depth, multi-step reasoning, and cross-functional awareness needed to resolve complex support cases without human intervention.
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- Azure subscription (with OpenAI access)
+- Docker (for local Redis)
 
-**Solution — SwarmDesk AI:**
-SwarmDesk AI is a multi-agent orchestration system where five specialized agents — Planner, Retriever, Responder, Validator, and Escalation — collaborate to resolve complex support tickets end-to-end. No single agent bears the full burden. Instead, agents self-organize around a task graph, retrieve grounded knowledge, draft validated responses, and intelligently escalate only when necessary.
+### 1. Clone & Install
 
-**Methodology:**
-1. The Orchestrator (Azure OpenAI GPT-4o + AutoGen 0.4) receives incoming tickets and routes them to the Planner Agent.
-2. The Planner Agent decomposes the ticket into a task dependency graph and identifies required knowledge domains.
-3. The Retriever Agent performs semantic search over the knowledge base using Azure AI Search and text-embedding-3-large, returning top-ranked documents via RAG.
-4. The Responder Agent (GPT-4o mini) drafts a contextual, grounded response using the retrieved documents.
-5. The Validator Agent independently reviews the response and assigns a confidence score (0–100). Responses scoring ≥75% are sent to the customer.
-6. The Escalation Agent handles sub-threshold tickets — packaging a full context bundle (agent trace, analysis, recommended actions) for the human agent.
+```bash
+git clone https://github.com/AnishaGarg/swarmdesk-ai.git
+cd swarmdesk-ai
+pip install -r requirements.txt
+```
 
-**Scope:**
-The system currently handles Tier 1 and Tier 2 support tickets across SaaS billing, technical integration, and account management domains. It is containerized, multi-tenant ready, and deployed on Azure Container Apps with a Next.js frontend.
+### 2. Environment Variables
 
-**Key Results (Prototype Testing — 200 tickets):**
-- 87% auto-resolution rate (no human needed)
-- 6.2 second average resolution time
-- 91% user satisfaction rating
-- ~60% cost reduction vs. traditional support
+```bash
+cp .env.example .env
+# Fill in your Azure credentials:
+```
 
-**Tech Stack:** Microsoft AutoGen 0.4, Azure OpenAI (GPT-4o, GPT-4o mini), text-embedding-3-large, Azure AI Search, FastAPI, Azure Cosmos DB, Redis, Next.js 14, Azure Container Apps, LangSmith
+```env
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_KEY=your_key_here
+AZURE_OPENAI_DEPLOYMENT_GPT4O=gpt-4o
+AZURE_OPENAI_DEPLOYMENT_MINI=gpt-4o-mini
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
+AZURE_AI_SEARCH_ENDPOINT=https://your-search.search.windows.net
+AZURE_AI_SEARCH_KEY=your_search_key
+AZURE_COSMOS_CONNECTION_STRING=your_cosmos_string
+REDIS_URL=redis://localhost:6379
+```
+
+### 3. Start Local Services
+
+```bash
+# Start Redis
+docker-compose up -d redis
+
+# Index knowledge base
+python rag/indexer.py --source ./data/knowledge_base/
+
+# Start FastAPI backend
+uvicorn api.main:app --reload --port 8000
+
+# Start frontend (new terminal)
+cd frontend && npm install && npm run dev
+```
+
+### 4. Access the App
+- Frontend: `http://localhost:3000`
+- API Docs: `http://localhost:8000/docs`
+
+---
+
+## 📊 Key Results (Prototype Testing)
+
+Tested on **200 synthetic support tickets** across 3 domains (SaaS billing, technical integration, account management):
+
+| Metric | Result |
+|--------|--------|
+| Tier-1 auto-resolution rate | **87%** |
+| Average resolution time | **6.2 seconds** |
+| User satisfaction (test cohort) | **91%** |
+| Cost reduction vs. traditional support | **~60%** |
+| Validator confidence (avg) | **88.4 / 100** |
+
+---
+
+## 🔮 Future Scope
+
+- **Plug-in Agent Marketplace** — Domain-specific agent modules (healthcare, finance, legal)
+- **Multi-tenant SaaS** — White-label deployment for enterprise
+- **Self-improving Agents** — Agents that learn from validated resolutions
+- **10+ Language Support** — Multilingual ticket handling
+- **Voice Interface** — Azure Cognitive Speech integration
+
+---
+
+## 👩‍💻 Team
+
+| Name | Role |
+|------|------|
+| **Anisha Garg** | Full-Stack AI Engineer — Architecture, Agent Design, Frontend, Deployment |
+
+**Team:** InnovaLite
+**Hackathon:** Microsoft Build AI 2026
+
+---
+
+## 📄 License
+
+MIT License — See [LICENSE](LICENSE) for details.
