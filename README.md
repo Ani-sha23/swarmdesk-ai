@@ -182,19 +182,18 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Fill in your Azure credentials:
 ```
 
 ```env
-AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-AZURE_OPENAI_KEY=your_key_here
-AZURE_OPENAI_DEPLOYMENT_GPT4O=gpt-4o
-AZURE_OPENAI_DEPLOYMENT_MINI=gpt-4o-mini
-AZURE_OPENAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
-AZURE_AI_SEARCH_ENDPOINT=https://your-search.search.windows.net
-AZURE_AI_SEARCH_KEY=your_search_key
-AZURE_COSMOS_CONNECTION_STRING=your_cosmos_string
-REDIS_URL=redis://localhost:6379
+AZURE_OPENAI_ENDPOINT
+AZURE_OPENAI_KEY
+AZURE_OPENAI_DEPLOYMENT_GPT4O
+AZURE_OPENAI_DEPLOYMENT_MINI
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT
+AZURE_AI_SEARCH_ENDPOINT
+AZURE_AI_SEARCH_KEY
+AZURE_COSMOS_CONNECTION_STRING
+REDIS_URL
 ```
 
 ### 3. Start Local Services
